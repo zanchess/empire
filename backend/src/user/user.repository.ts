@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, RootFilterQuery } from 'mongoose';
 import { User, UserDocument } from './user.model';
-import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.schema';
+import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.input';
 
 @Injectable()
 export class UserRepository {
