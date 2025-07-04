@@ -20,12 +20,18 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/apollo": "^13.1.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/graphql": "^13.1.0",
     "@nestjs/mongoose": "^11.0.3",
     "@nestjs/platform-express": "^11.0.1",
+    "@types/cors": "^2.8.19",
+    "apollo-server-express": "^3.13.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.0.1",
+    "graphql": "^16.11.0",
     "mongoose": "^8.16.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

@@ -1,15 +1,7 @@
-# Dockerfile for React (Vite) app
-FROM node:20-alpine AS builder
+FROM node:23-alpine
 WORKDIR /app
-COPY package.json package-lock.json* ./
+COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
-
-FROM node:20-alpine AS runner
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
 EXPOSE 5173
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"] 
+CMD ["npm", "run", "dev", "--", "--host"]
