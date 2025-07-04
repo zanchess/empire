@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -18,10 +16,10 @@ import { User, UserSchema } from './user/user.model';
       autoSchemaFile: true,
       playground: true,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/empire'),
+    MongooseModule.forRoot(process.env.MONGODB_URI!),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
-  controllers: [AppController],
-  providers: [AppService, UserResolver, UserService, UserRepository],
+  controllers: [],
+  providers: [UserResolver, UserService, UserRepository],
 })
 export class AppModule {}
