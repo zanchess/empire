@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, RootFilterQuery } from 'mongoose';
 import { User, UserDocument } from './user.model';
-import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.input';
+import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.schema';
 
 @Injectable()
 export class UserRepository {
@@ -14,24 +14,29 @@ export class UserRepository {
 
   async findAll(page = 1, limit = 10, filter?: UsersFilterInput): Promise<User[]> {
     const query: RootFilterQuery<UserDocument> = {};
+
     if (filter?.search) {
       query.$or = [
         { email: { $regex: filter.search, $options: 'i' } },
         { name: { $regex: filter.search, $options: 'i' } },
       ];
     }
+
     const skip = (page - 1) * limit;
     return this.userModel.find(query).skip(skip).limit(limit).exec();
   }
 
   async countAll(filter?: UsersFilterInput): Promise<number> {
     const query: RootFilterQuery<UserDocument> = {};
+
+    // Поиск по подстроке в имени или email
     if (filter?.search) {
       query.$or = [
         { email: { $regex: filter.search, $options: 'i' } },
         { name: { $regex: filter.search, $options: 'i' } },
       ];
     }
+
     return this.userModel.countDocuments(query).exec();
   }
 

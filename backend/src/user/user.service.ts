@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.input';
+import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.schema';
 import { User, UsersPagination } from './user.model';
 
 @Injectable()
@@ -10,6 +10,7 @@ export class UserService {
   async getUser(id: string): Promise<User> {
     const user = await this.userRepository.findById(id);
     if (!user) throw new Error('User not found');
+
     return user;
   }
 
@@ -36,12 +37,14 @@ export class UserService {
   async updateUser(id: string, input: UpdateUserInput): Promise<User> {
     const user = await this.userRepository.update(id, input);
     if (!user) throw new Error('User not found');
+
     return user;
   }
 
   async deleteUser(id: string): Promise<User> {
     const user = await this.userRepository.delete(id);
     if (!user) throw new Error('User not found');
+
     return user;
   }
 }
