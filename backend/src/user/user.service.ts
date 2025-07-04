@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.input';
+import { CreateUserInput, UpdateUserInput, UsersFilterInput } from './user.schema';
 import { User, UsersPagination } from './user.model';
 
 @Injectable()
