@@ -119,6 +119,7 @@ export default function UsersPage() {
   return (
     <Box
       sx={{
+        height: '900px',
         paddingTop: '30px',
         paddingBottom: '30px',
         display: 'flex',
