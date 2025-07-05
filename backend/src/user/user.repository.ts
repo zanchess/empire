@@ -29,7 +29,6 @@ export class UserRepository {
   async countAll(filter?: UsersFilterInput): Promise<number> {
     const query: RootFilterQuery<UserDocument> = {};
 
-    // Поиск по подстроке в имени или email
     if (filter?.search) {
       query.$or = [
         { email: { $regex: filter.search, $options: 'i' } },

@@ -55,7 +55,6 @@ const UsersTable = React.memo(function UsersTable({
     onSearchChange(e.target.value);
   }, [onSearchChange]);
 
-  // Показываем полный лоадер только при первой загрузке (когда нет данных и нет поискового запроса)
   if (loading && !users.length && !searchValue) {
     return (
       <Box 
@@ -79,9 +78,8 @@ const UsersTable = React.memo(function UsersTable({
       display: 'flex', 
       flexDirection: 'column', 
       height: '100%',
-      minHeight: 0 // Важно для flexbox
+      minHeight: 0
     }}>
-      {/* Поле поиска - всегда остается в DOM */}
       <Box sx={{ mb: 2, flexShrink: 0 }}>
         <TextField
           fullWidth
@@ -110,12 +108,11 @@ const UsersTable = React.memo(function UsersTable({
         />
       </Box>
 
-      {/* Контент таблицы */}
       <Box sx={{ 
         flexGrow: 1, 
         display: 'flex', 
         flexDirection: 'column',
-        minHeight: 0, // Важно для flexbox
+        minHeight: 0,
         overflow: 'hidden'
       }}>
         {users.length === 0 && !loading ? (
@@ -131,8 +128,8 @@ const UsersTable = React.memo(function UsersTable({
               sx={{ 
                 flexGrow: 1,
                 position: 'relative',
-                overflow: 'auto', // Включаем скролл в таблице
-                maxHeight: 'none' // Убираем ограничение высоты
+                overflow: 'auto',
+                maxHeight: 'none'
               }}
             >
               {loading && (
@@ -208,7 +205,7 @@ const UsersTable = React.memo(function UsersTable({
                 display: 'flex', 
                 justifyContent: 'center', 
                 mt: 2,
-                flexShrink: 0 // Пагинация не сжимается
+                flexShrink: 0
               }}>
                 <Pagination
                   count={totalPages}

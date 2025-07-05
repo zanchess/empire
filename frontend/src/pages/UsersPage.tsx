@@ -119,12 +119,10 @@ export default function UsersPage() {
   return (
     <Box
       sx={{
-        height: '100vh',
         paddingTop: '30px',
         paddingBottom: '30px',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
         backgroundColor: '#f5f5f5',
       }}
     >
