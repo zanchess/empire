@@ -1,19 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Typography, Button, Box, Alert } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import { 
-  useUsersQuery, 
-  useCreateUserMutation, 
-  useUpdateUserMutation, 
-  useDeleteUserMutation
+import {
+  useUsersQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } from '../generated/graphql';
-import type {
-  CreateUserInput,
-  UpdateUserInput,
-  User
-} from '../generated/graphql';
+import type { CreateUserInput, UpdateUserInput, User } from '../generated/graphql';
 import UsersTable from '../components/UsersTable';
 import UserFormDialog from '../components/UserFormDialog';
+import { UserDetailsDialog } from '../components/UserDetailsDialog';
 
 const ROWS_PER_PAGE = 10;
 
@@ -27,6 +24,8 @@ export default function UsersPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,10 +37,10 @@ export default function UsersPage() {
   }, [searchValue]);
 
   const { data, loading, refetch } = useUsersQuery({
-    variables: { 
-      page, 
+    variables: {
+      page,
       limit: ROWS_PER_PAGE,
-      filter: debouncedSearch ? { search: debouncedSearch } : undefined
+      filter: debouncedSearch ? { search: debouncedSearch } : undefined,
     },
     fetchPolicy: 'cache-and-network',
   });
@@ -56,7 +55,7 @@ export default function UsersPage() {
     setError(null);
     setOpen(true);
   }, []);
-  
+
   const handleClose = useCallback(() => {
     setOpen(false);
     setSubmitLoading(false);
@@ -74,14 +73,14 @@ export default function UsersPage() {
   const handleSubmit = useCallback(async (): Promise<void> => {
     setSubmitLoading(true);
     setError(null);
-    
+
     try {
       if (editUser) {
-        await updateUser({ 
-          variables: { 
-            id: editUser.id, 
-            input: form as UpdateUserInput 
-          } 
+        await updateUser({
+          variables: {
+            id: editUser.id,
+            input: form as UpdateUserInput,
+          },
         });
       } else {
         await createUser({ variables: { input: form } });
@@ -95,23 +94,36 @@ export default function UsersPage() {
     }
   }, [editUser, form, updateUser, createUser, refetch, handleClose]);
 
-  const handleDelete = useCallback(async (id: string) => {
-    setDeleteLoading(id);
-    setError(null);
-    
-    try {
-      await deleteUser({ variables: { id } });
-      await refetch();
-    } catch (error: any) {
-      console.error('Error deleting user:', error);
-      setError(error.message || 'Произошла ошибка при удалении пользователя');
-    } finally {
-      setDeleteLoading(null);
-    }
-  }, [deleteUser, refetch]);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      setDeleteLoading(id);
+      setError(null);
+
+      try {
+        await deleteUser({ variables: { id } });
+        await refetch();
+      } catch (error: any) {
+        console.error('Error deleting user:', error);
+        setError(error.message || 'Произошла ошибка при удалении пользователя');
+      } finally {
+        setDeleteLoading(null);
+      }
+    },
+    [deleteUser, refetch],
+  );
 
   const handleErrorClose = useCallback(() => {
     setError(null);
+  }, []);
+
+  const handleUserClick = useCallback((user: User) => {
+    setSelectedUser(user);
+    setDetailsOpen(true);
+  }, []);
+
+  const handleDetailsClose = useCallback(() => {
+    setDetailsOpen(false);
+    setSelectedUser(null);
   }, []);
 
   const pagination = data?.users;
@@ -140,9 +152,9 @@ export default function UsersPage() {
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h4">Пользователи</Typography>
-          <Button 
-            variant="contained" 
-            startIcon={<Add />} 
+          <Button
+            variant="contained"
+            startIcon={<Add />}
             onClick={() => handleOpen()}
             disabled={loading}
           >
@@ -155,7 +167,7 @@ export default function UsersPage() {
             {error}
           </Alert>
         )}
-        
+
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <UsersTable
             users={pagination?.users || []}
@@ -165,6 +177,7 @@ export default function UsersPage() {
             onPageChange={handleChangePage}
             onEdit={handleOpen}
             onDelete={handleDelete}
+            onUserClick={handleUserClick}
             totalCount={pagination?.totalCount || 0}
             deleteLoading={deleteLoading}
             searchValue={searchValue}
@@ -172,7 +185,7 @@ export default function UsersPage() {
           />
         </Box>
       </Box>
-      
+
       <UserFormDialog
         open={open}
         onClose={handleClose}
@@ -183,6 +196,8 @@ export default function UsersPage() {
         loading={submitLoading}
         error={error}
       />
+
+      <UserDetailsDialog open={detailsOpen} onClose={handleDetailsClose} user={selectedUser} />
     </Box>
   );
-} 
+}

@@ -10,7 +10,7 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import type { User, CreateUserInput } from "../generated/graphql.ts";
+import type { User, CreateUserInput } from '../generated/graphql.ts';
 
 interface UserFormDialogProps {
   open: boolean;
@@ -59,18 +59,18 @@ export default function UserFormDialog({
 
   const handleEmailBlur = () => {
     const emailError = validateEmail(form.email);
-    setValidationErrors(prev => ({ ...prev, email: emailError }));
+    setValidationErrors((prev) => ({ ...prev, email: emailError }));
   };
 
   const handleNameBlur = () => {
     const nameError = validateName(form.name);
-    setValidationErrors(prev => ({ ...prev, name: nameError }));
+    setValidationErrors((prev) => ({ ...prev, name: nameError }));
   };
 
   const handleSubmit = async () => {
     const emailError = validateEmail(form.email);
     const nameError = validateName(form.name);
-    
+
     setValidationErrors({
       email: emailError,
       name: nameError,
@@ -85,17 +85,11 @@ export default function UserFormDialog({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        {editUser ? 'Редактировать пользователя' : 'Создать пользователя'}
-      </DialogTitle>
+      <DialogTitle>{editUser ? 'Редактировать пользователя' : 'Создать пользователя'}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
-          {error && (
-            <Alert severity="error">
-              {error}
-            </Alert>
-          )}
-          
+          {error && <Alert severity="error">{error}</Alert>}
+
           <TextField
             label="Email"
             type="email"
@@ -133,12 +127,12 @@ export default function UserFormDialog({
           sx={{
             minWidth: 120,
             opacity: loading ? 0.8 : 1,
-            transition: 'opacity 0.2s ease'
+            transition: 'opacity 0.2s ease',
           }}
         >
-          {loading ? 'Сохранение...' : (editUser ? 'Обновить' : 'Создать')}
+          {loading ? 'Сохранение...' : editUser ? 'Обновить' : 'Создать'}
         </Button>
       </DialogActions>
     </Dialog>
   );
-} 
+}
