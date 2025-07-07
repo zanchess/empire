@@ -94,19 +94,21 @@ const UsersTable = React.memo(function UsersTable({
           placeholder="Поиск по имени или email..."
           value={searchValue}
           onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-            endAdornment: searchValue && (
-              <InputAdornment position="end">
-                <IconButton size="small" onClick={handleClearSearch} edge="end">
-                  <Clear />
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+              endAdornment: searchValue && (
+                <InputAdornment position="end">
+                  <IconButton size="small" onClick={handleClearSearch} edge="end">
+                    <Clear />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }
           }}
         />
       </Box>

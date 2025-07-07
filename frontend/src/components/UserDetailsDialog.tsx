@@ -57,7 +57,6 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({ open, onCl
 
       <DialogContent sx={{ pt: 3, pb: 3 }}>
         <Box display="flex" flexDirection="column" gap={3}>
-          {/* Имя пользователя */}
           <Box>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
               Имя пользователя
