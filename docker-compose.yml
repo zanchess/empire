@@ -7,16 +7,21 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - app-network
 
   backend:
     build: ./backend
     ports:
       - '3000:3000'
     environment:
-      - MONGODB_URI=mongodb://localhost:27017/empire
+      - MONGODB_URI=mongodb://mongo:27017/empire
     depends_on:
       - mongo
     restart: unless-stopped
+    networks:
+      - app-network
+      
   mongo:
     image: mongo:7
     restart: always
