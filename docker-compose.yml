@@ -13,7 +13,7 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - MONGODB_URI=mongodb://localhost:27017/empire
     depends_on:
       - mongo
     restart: unless-stopped
