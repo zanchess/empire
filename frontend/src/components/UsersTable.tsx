@@ -94,6 +94,7 @@ const UsersTable = React.memo(function UsersTable({
           placeholder="Поиск по имени или email..."
           value={searchValue}
           onChange={handleSearchChange}
+          autoComplete="search"
           slotProps={{
             input: {
               startAdornment: (
